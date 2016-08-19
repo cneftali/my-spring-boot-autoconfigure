@@ -17,7 +17,14 @@
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
 
-        <!-- PROVIDED -->
+        <!-- Optional -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- Provided -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
