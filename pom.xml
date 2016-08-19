@@ -43,6 +43,7 @@
         <org.subethamail.version>3.1.7</org.subethamail.version>
         <dumbster.version>1.6</dumbster.version>
         <guava.version>19.0</guava.version>
+        <cxf.version>3.1.6</cxf.version>
     </properties>
 
     <dependencyManagement>
@@ -310,6 +311,11 @@
                         </dependency>
                     </dependencies>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.cxf</groupId>
+                    <artifactId>cxf-codegen-plugin</artifactId>
+                    <version>${cxf.version}</version>
+                </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
@@ -479,5 +485,6 @@
 
     <modules>
         <module>smtp-spring-boot-autoconfigure</module>
+        <module>inwebo-spring-boot-autoconfigure</module>
     </modules>
 </project>

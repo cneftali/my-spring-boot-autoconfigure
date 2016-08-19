@@ -17,4 +17,5 @@ $ mvn clean package
 ## Added Autoconfigure:
 
 - [Java SMTP Server](https://github.com/voodoodyne/subethasmtp)
+- [InWebo](https://www.myinwebo.com/)
 
