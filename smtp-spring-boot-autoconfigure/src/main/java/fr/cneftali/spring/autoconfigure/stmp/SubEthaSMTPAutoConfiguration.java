@@ -33,7 +33,7 @@ public class SubEthaSMTPAutoConfiguration {
     }
 
     @Configuration
-    @ConditionalOnProperty(prefix = "spring.smtp.server.wiser", name = "enabled", havingValue = "true", matchIfMissing = false)
+    @ConditionalOnProperty(prefix = "spring.smtp.server.wiser", name = "enabled", havingValue = "true")
     @ConditionalOnMissingBean(Wiser.class)
     protected static class WiserConfiguration {
 
@@ -75,7 +75,7 @@ public class SubEthaSMTPAutoConfiguration {
         }
 
         @Bean
-        @ConditionalOnMissingBean({ MessageHandlerFactory.class, SimpleMessageListener.class})
+        @ConditionalOnMissingBean({ SimpleMessageListener.class})
         protected SimpleMessageListener simpleMessageListener() {
             return new MySimpleMessageListener();
         }
