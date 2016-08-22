@@ -141,7 +141,7 @@ public class InWeboAutoConfiguration {
             }
 
             @Override
-            public ObjectMapper getContext(Class<?> type) {
+            public ObjectMapper getContext(final Class<?> type) {
                 return objectMapper;
             }
         }
