@@ -33,7 +33,7 @@ public class MySimpleMessageListener implements SimpleMessageListener {
             LOGGER.debug("Delivering mail from " + from + " to " + recipient);
         }
         final String message = CharStreams.toString(new InputStreamReader(data, Charsets.UTF_8));
-        this.messages.add(new SimpleMessage(from, recipient, message));
+        this.messages.add(new SimpleMessage(message, from, recipient));
     }
 
     public List<SimpleMessage> getMessages() {

@@ -73,22 +73,26 @@ public class SubEthaSMTPAutoConfigurationTestITG {
         this.context.refresh();
 
         // When
-        sendMail(port);
+        sendMail(port, "toto@example.com", "titi@example.com");
 
         // Then
         assertThat(this.context.getBean(MySimpleMessageListener.class)).isNotNull();
         final MySimpleMessageListener bean = this.context.getBean(MySimpleMessageListener.class);
         assertThat(bean.getMessages()).isNotEmpty();
+        assertThat(bean.getMessages()).hasSize(1);
+        assertThat(bean.getMessages().get(0).getEnvelopeReceiver()).isEqualTo("titi@example.com");
+        assertThat(bean.getMessages().get(0).getEnvelopeSender()).isEqualTo("toto@example.com");
+        assertThat(bean.getMessages().get(0).getMessageData()).isNotEmpty();
     }
 
-    private void sendMail(int port) throws Exception {
+    private void sendMail(int port, String from, String to) throws Exception {
         final Properties properties = System.getProperties();
         properties.setProperty("mail.smtp.host", "localhost");
         properties.setProperty("mail.smtp.port", String.valueOf(port));
         Session session = Session.getDefaultInstance(properties);
         final MimeMessage message = new MimeMessage(session);
-        message.setFrom(new InternetAddress("toto@example.com"));
-        message.addRecipient(TO, new InternetAddress("titi@example.com"));
+        message.setFrom(new InternetAddress(from));
+        message.addRecipient(TO, new InternetAddress(to));
         message.setSubject("This is the Subject Line!");
         message.setText("This is actual message");
         Transport.send(message);
