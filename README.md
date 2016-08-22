@@ -20,3 +20,8 @@ $ mvn clean package
 - [Java SMTP Server](https://github.com/voodoodyne/subethasmtp)
 - [InWebo](https://www.myinwebo.com/)
 
+## Make Release :
+
+```bash
+$ mvn --batch-mode -Prelease,make-release clean -Dresume=false build-helper:parse-version release:prepare release:perform -DdevelopmentVersion=1.2.0-SNAPSHOT
+```
