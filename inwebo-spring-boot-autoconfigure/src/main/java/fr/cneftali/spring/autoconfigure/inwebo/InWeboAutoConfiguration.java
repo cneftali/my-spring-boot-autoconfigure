@@ -57,11 +57,11 @@ public class InWeboAutoConfiguration {
     @Bean(name = "inWeboSslContext")
     @Order(HIGHEST_PRECEDENCE)
     @ConditionalOnMissingBean(name = "inWeboSslContext")
-    protected SSLContext sslContext() throws Exception {
-        final KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance("SunX509");
-        final KeyStore keyStore = KeyStore.getInstance("PKCS12");
+    protected SSLContext sslContext() {
         InputStream keyInput = null;
         try {
+            final KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance("SunX509");
+            final KeyStore keyStore = KeyStore.getInstance("PKCS12");
             final char[] certPassword = properties.getCertificate().getPassword().toCharArray();
             keyInput = getCertificateFile();
             keyStore.load(keyInput, certPassword);
@@ -69,6 +69,8 @@ public class InWeboAutoConfiguration {
             final SSLContext context = SSLContext.getInstance("TLS");
             context.init(keyManagerFactory.getKeyManagers(), null, new SecureRandom());
             return context;
+        } catch (final Exception e) {
+            throw new IllegalStateException("Error to create SSL Context", e);
         } finally {
             if (keyInput != null) {
                 try {
