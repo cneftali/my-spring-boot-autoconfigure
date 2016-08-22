@@ -11,7 +11,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.subethamail.smtp.MessageHandlerFactory;
-import org.subethamail.smtp.helper.SimpleMessageListener;
 import org.subethamail.smtp.helper.SimpleMessageListenerAdapter;
 import org.subethamail.smtp.server.SMTPServer;
 import org.subethamail.wiser.Wiser;
@@ -75,18 +74,6 @@ public class SubEthaSMTPAutoConfiguration {
         }
 
         @Bean
-        @ConditionalOnMissingBean({ SimpleMessageListener.class})
-        protected SimpleMessageListener simpleMessageListener() {
-            return new MySimpleMessageListener();
-        }
-
-        @Bean
-        @ConditionalOnMissingBean(MessageHandlerFactory.class)
-        protected MessageHandlerFactory messageHandlerFactory(final SimpleMessageListener listener) {
-            return new SimpleMessageListenerAdapter(listener);
-        }
-
-        @Bean
         @ConditionalOnMissingBean(SMTPServer.class)
         protected SMTPServer smtpServer(final MessageHandlerFactory factory) {
             smtpServer = new SMTPServer(factory);
@@ -100,6 +87,20 @@ public class SubEthaSMTPAutoConfiguration {
         public void close() {
             if (this.smtpServer != null) {
                 this.smtpServer.stop();
+            }
+        }
+
+        @Configuration
+        @ConditionalOnMissingBean({ MessageHandlerFactory.class})
+        protected static class MessageHandlerFactoryConfiguration {
+            @Bean
+            protected MySimpleMessageListener simpleMessageListener() {
+                return new MySimpleMessageListener();
+            }
+
+            @Bean
+            protected MessageHandlerFactory messageHandlerFactory(final MySimpleMessageListener listener) {
+                return new SimpleMessageListenerAdapter(listener);
             }
         }
     }
