@@ -5,6 +5,7 @@
 1. [Oracle Sun JDK 1.7](http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html)
 2. [Maven 3.3.9](https://maven.apache.org/)
 3. [Lombok](https://projectlombok.org/download.html)
+4. [(JCE) Unlimited Strength Jurisdiction Policy Files](http://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html)
 
 ## Building from Source
 

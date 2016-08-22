@@ -21,6 +21,8 @@ public class InWeboProperties {
     @NotNull
     private String restBaseUrl = "https://api.myinwebo.com";
 
+    @Getter
+    @Setter
     public static class Service {
 
         private int id;
@@ -35,6 +37,8 @@ public class InWeboProperties {
         private Form form;
     }
 
+    @Getter
+    @Setter
     public static class Certificate {
 
         @NotNull
@@ -45,6 +49,8 @@ public class InWeboProperties {
 
     }
 
+    @Getter
+    @Setter
     public static class Push {
 
         private boolean authenticate = false;
@@ -55,15 +61,17 @@ public class InWeboProperties {
 
     }
 
+    @Getter
+    @Setter
     public static class Helium {
 
         private boolean authenticate = false;
 
-        @NotNull
         private String alias;
-
     }
 
+    @Getter
+    @Setter
     public static class Form {
 
         private boolean authenticate = false;
