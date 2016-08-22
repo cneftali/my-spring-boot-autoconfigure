@@ -24,4 +24,5 @@ $ mvn clean package
 
 ```bash
 $ mvn --batch-mode -Prelease,make-release clean -Dresume=false build-helper:parse-version release:prepare release:perform -DdevelopmentVersion=1.2.0-SNAPSHOT
+$ git push --all && git push --tags
 ```
