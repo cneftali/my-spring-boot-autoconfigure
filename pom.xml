@@ -46,6 +46,7 @@
         <cxf.version>3.1.6</cxf.version>
         <jersey.version>2.23.1</jersey.version>
         <jackson.version>2.8.1</jackson.version>
+        <release.version>${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}</release.version>
     </properties>
 
     <dependencyManagement>
@@ -150,7 +151,6 @@
                     <artifactId>maven-deploy-plugin</artifactId>
                     <version>2.8.2</version>
                     <configuration>
-                        <retryFailedDeploymentCount>10</retryFailedDeploymentCount>
                         <skip>true</skip>
                     </configuration>
                 </plugin>
@@ -298,33 +298,6 @@
                     <version>${spring-boot.version}</version>
                 </plugin>
                 <plugin>
-                    <groupId>external.atlassian.jgitflow</groupId>
-                    <artifactId>jgitflow-maven-plugin</artifactId>
-                    <version>1.0-m5.1</version>
-                    <dependencies>
-                        <dependency>
-                            <groupId>com.jcraft</groupId>
-                            <artifactId>jsch.agentproxy.jsch</artifactId>
-                            <version>0.0.9</version>
-                        </dependency>
-                        <dependency>
-                            <groupId>com.jcraft</groupId>
-                            <artifactId>jsch.agentproxy.sshagent</artifactId>
-                            <version>0.0.9</version>
-                        </dependency>
-                        <dependency>
-                            <groupId>com.jcraft</groupId>
-                            <artifactId>jsch.agentproxy.usocket-jna</artifactId>
-                            <version>0.0.9</version>
-                        </dependency>
-                        <dependency>
-                            <groupId>com.jcraft</groupId>
-                            <artifactId>jsch</artifactId>
-                            <version>0.1.53</version>
-                        </dependency>
-                    </dependencies>
-                </plugin>
-                <plugin>
                     <groupId>org.apache.cxf</groupId>
                     <artifactId>cxf-codegen-plugin</artifactId>
                     <version>${cxf.version}</version>
@@ -332,6 +305,10 @@
             </plugins>
         </pluginManagement>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+            </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
@@ -411,28 +388,20 @@
             <id>snapshot</id>
         </profile>
         <profile>
-            <id>git-flow</id>
+            <id>make-release</id>
             <build>
                 <plugins>
                     <plugin>
-                        <groupId>external.atlassian.jgitflow</groupId>
-                        <artifactId>jgitflow-maven-plugin</artifactId>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-release-plugin</artifactId>
                         <configuration>
-                            <pushFeatures>false</pushFeatures>
-                            <pushHotfixes>true</pushHotfixes>
-                            <pushReleases>true</pushReleases>
-                            <keepBranch>false</keepBranch>
-                            <enableSshAgent>false</enableSshAgent>
+                            <mavenExecutorId>forked-path</mavenExecutorId>
                             <autoVersionSubmodules>true</autoVersionSubmodules>
+                            <preparationGoals>clean install</preparationGoals>
+                            <pushChanges>true</pushChanges>
                             <useReleaseProfile>false</useReleaseProfile>
-                            <flowInitContext>
-                                <masterBranchName>master</masterBranchName>
-                                <developBranchName>develop</developBranchName>
-                                <featureBranchPrefix>feature/</featureBranchPrefix>
-                                <releaseBranchPrefix>release/</releaseBranchPrefix>
-                                <hotfixBranchPrefix>hotfix/</hotfixBranchPrefix>
-                                <versionTagPrefix>version/</versionTagPrefix>
-                            </flowInitContext>
+                            <tag>Version/${release.version}</tag>
+                            <releaseVersion>${release.version}</releaseVersion>
                         </configuration>
                     </plugin>
                 </plugins>
