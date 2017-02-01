@@ -26,7 +26,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 import static javax.mail.Message.RecipientType.TO;
-import static org.fest.assertions.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
 
 
