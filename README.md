@@ -1,5 +1,7 @@
 # Spring Boot Autoconfigure
 
+[![Build Status](https://api.travis-ci.org/cneftali/spring-boot-autoconfigure.svg?branch=develop)](https://github.com/cneftali/spring-boot-autoconfigure)
+
 ## Requirements
 
 1. [Oracle Sun JDK 1.7](http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html)
