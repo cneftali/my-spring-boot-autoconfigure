@@ -348,9 +348,9 @@
             <plugin>
                 <groupId>org.eluder.coveralls</groupId>
                 <artifactId>coveralls-maven-plugin</artifactId>
-                <configuration>
-                    <repoToken>HMU3FhgghK8s0bEpjApuMoEOQnA143hkZ</repoToken>
-                </configuration>
+                <!--<configuration>-->
+                    <!--<repoToken>HMU3FhgghK8s0bEpjApuMoEOQnA143hkZ</repoToken>-->
+                <!--</configuration>-->
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
