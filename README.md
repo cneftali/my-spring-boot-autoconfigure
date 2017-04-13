@@ -1,7 +1,7 @@
 # Spring Boot Autoconfigure
 
 [![Build Status](https://api.travis-ci.org/cneftali/spring-boot-autoconfigure.svg?branch=develop)](https://github.com/cneftali/spring-boot-autoconfigure)
-[![Coverage Status](https://coveralls.io/github/cneftali/spring-boot-autoconfigure/badge.svg?branch=develop)](https://coveralls.io/github/cneftali/spring-boot-autoconfigure?branch=develop)
+[![Coverage Status](https://coveralls.io/repos/github/cneftali/spring-boot-autoconfigure/badge.svg?branch=develop)](https://coveralls.io/github/cneftali/spring-boot-autoconfigure?branch=develop)
 
 ## Requirements
 
