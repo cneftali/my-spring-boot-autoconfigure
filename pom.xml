@@ -52,20 +52,18 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>1.7</java.version>
+        <java.version>1.8</java.version>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.source>${java.version}</maven.compiler.source>
-        <spring-boot.version>1.4.3.RELEASE</spring-boot.version>
-        <io.spring.platform.version>2.0.7.RELEASE</io.spring.platform.version>
+        <spring-boot.version>1.5.3.RELEASE</spring-boot.version>
         <skip.tests>false</skip.tests>
         <commons-lang3.version>3.3.2</commons-lang3.version>
         <org.projectlombok.version>1.16.10</org.projectlombok.version>
         <org.subethamail.version>3.1.7</org.subethamail.version>
         <dumbster.version>1.6</dumbster.version>
-        <guava.version>19.0</guava.version>
-        <cxf.version>3.1.9</cxf.version>
+        <guava.version>21.0</guava.version>
+        <cxf.version>3.1.11</cxf.version>
         <jersey.version>2.25.1</jersey.version>
-        <jackson.version>2.8.1</jackson.version>
         <release.version>
             ${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}
         </release.version>
@@ -143,12 +141,25 @@
                         <debug>true</debug>
                         <forceJavacCompilerUse>true</forceJavacCompilerUse>
                         <showWarnings>true</showWarnings>
+                        <compilerArgument>-parameters</compilerArgument>
                     </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-resources-plugin</artifactId>
-                    <version>3.0.0</version>
+                    <version>3.0.1</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.apache.maven.shared</groupId>
+                            <artifactId>maven-filtering</artifactId>
+                            <version>3.1.1</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>2.5.2</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -159,32 +170,16 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
                     <version>2.10.4</version>
-                    <configuration>
-                        <skip>true</skip>
-                        <attach>false</attach>
-                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-deploy-plugin</artifactId>
                     <version>2.8.2</version>
-                    <configuration>
-                        <skip>true</skip>
-                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
                     <version>3.0.2</version>
-                    <configuration>
-                        <archive>
-                            <manifest>
-                                <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                                <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-                                <mainClass>${start-class}</mainClass>
-                            </manifest>
-                        </archive>
-                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -205,100 +200,11 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>2.19.1</version>
-                    <configuration>
-                        <includes>
-                            <include>**/*Tests.java</include>
-                            <include>**/*Test.java</include>
-                            <include>**/*TestITG.java</include>
-                        </includes>
-                        <excludes>
-                            <exclude>**/Abstract*.java</exclude>
-                        </excludes>
-                        <systemPropertyVariables>
-                            <java.security.egd>file:/dev/./urandom</java.security.egd>
-                            <java.awt.headless>true</java.awt.headless>
-                        </systemPropertyVariables>
-                        <argLine>-Xmx512m -Dfile.encoding=UTF8</argLine>
-                        <skip>${skip.tests}</skip>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-shade-plugin</artifactId>
-                    <version>2.4.3</version>
-                    <dependencies>
-                        <dependency>
-                            <groupId>org.springframework.boot</groupId>
-                            <artifactId>spring-boot-maven-plugin</artifactId>
-                            <version>${spring-boot.version}</version>
-                        </dependency>
-                    </dependencies>
-                    <configuration>
-                        <finalName>${project.artifactId}</finalName>
-                        <shadedArtifactAttached>true</shadedArtifactAttached>
-                        <shadedClassifierName>jar-with-dependencies</shadedClassifierName>
-                        <keepDependenciesWithProvidedScope>true</keepDependenciesWithProvidedScope>
-                        <createDependencyReducedPom>true</createDependencyReducedPom>
-                        <filters>
-                            <filter>
-                                <artifact>*:*</artifact>
-                                <excludes>
-                                    <exclude>META-INF/*.SF</exclude>
-                                    <exclude>META-INF/*.DSA</exclude>
-                                    <exclude>META-INF/*.RSA</exclude>
-                                </excludes>
-                            </filter>
-                        </filters>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <phase>package</phase>
-                            <goals>
-                                <goal>shade</goal>
-                            </goals>
-                            <configuration>
-                                <transformers>
-                                    <transformer
-                                            implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                        <resource>META-INF/spring.handlers</resource>
-                                    </transformer>
-                                    <transformer
-                                            implementation="org.springframework.boot.maven.PropertiesMergingResourceTransformer">
-                                        <resource>META-INF/spring.factories</resource>
-                                    </transformer>
-                                    <transformer
-                                            implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                        <resource>META-INF/spring.schemas</resource>
-                                    </transformer>
-                                    <transformer
-                                            implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
-                                    <transformer
-                                            implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                        <mainClass>${start-class}</mainClass>
-                                    </transformer>
-                                </transformers>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-assembly-plugin</artifactId>
-                    <version>2.6</version>
-                    <configuration>
-                        <tarLongFileMode>posix</tarLongFileMode>
-                        <appendAssemblyId>false</appendAssemblyId>
-                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>buildnumber-maven-plugin</artifactId>
                     <version>1.4</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>exec-maven-plugin</artifactId>
-                    <version>1.5.0</version>
                 </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
@@ -324,6 +230,36 @@
         </pluginManagement>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>cobertura-maven-plugin</artifactId>
                 <configuration>
@@ -346,46 +282,29 @@
                 </dependencies>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.19.1</version>
+                <configuration>
+                    <includes>
+                        <include>**/*Tests.java</include>
+                        <include>**/*Test.java</include>
+                        <include>**/*TestITG.java</include>
+                    </includes>
+                    <excludes>
+                        <exclude>**/Abstract*.java</exclude>
+                    </excludes>
+                    <systemPropertyVariables>
+                        <java.security.egd>file:/dev/./urandom</java.security.egd>
+                        <java.awt.headless>true</java.awt.headless>
+                    </systemPropertyVariables>
+                    <argLine>-Xmx512m -Dfile.encoding=UTF8</argLine>
+                    <skip>${skip.tests}</skip>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.eluder.coveralls</groupId>
                 <artifactId>coveralls-maven-plugin</artifactId>
-                <!--<configuration>-->
-                    <!--<repoToken>HMU3FhgghK8s0bEpjApuMoEOQnA143hkZ</repoToken>-->
-                <!--</configuration>-->
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-deploy-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>parsedVersion</id>
-                        <phase>initialize</phase>
-                        <goals>
-                            <goal>parse-version</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>buildnumber-maven-plugin</artifactId>
-                <configuration>
-                    <format>{0,date,yyyy-MM-dd HH:mm:ss}</format>
-                    <items>
-                        <item>timestamp</item>
-                    </items>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>create</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -444,7 +363,7 @@
                         <configuration>
                             <mavenExecutorId>forked-path</mavenExecutorId>
                             <autoVersionSubmodules>true</autoVersionSubmodules>
-                            <preparationGoals>clean install</preparationGoals>
+                            <preparationGoals>clean test</preparationGoals>
                             <pushChanges>true</pushChanges>
                             <useReleaseProfile>false</useReleaseProfile>
                             <tag>Version/${release.version}</tag>
@@ -495,7 +414,7 @@
                                             <message>No Snapshots Allowed!</message>
                                         </requireReleaseVersion>
                                         <requireMavenVersion>
-                                            <version>3.3.9</version>
+                                            <version>3.2.5</version>
                                         </requireMavenVersion>
                                     </rules>
                                     <fail>true</fail>
