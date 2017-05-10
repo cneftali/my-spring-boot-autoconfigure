@@ -1,5 +1,8 @@
 # Spring Boot Autoconfigure
 
+[![Build Status](https://api.travis-ci.org/cneftali/spring-boot-autoconfigure.svg?branch=develop)](https://github.com/cneftali/spring-boot-autoconfigure)
+[![Coverage Status](https://coveralls.io/repos/github/cneftali/spring-boot-autoconfigure/badge.svg?branch=develop)](https://coveralls.io/github/cneftali/spring-boot-autoconfigure?branch=develop)
+
 ## Requirements
 
 1. [Oracle Sun JDK 1.7](http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html)
@@ -24,8 +27,8 @@ $ mvn clean package
 
 ```bash
 $ mvn --batch-mode -Prelease,make-release clean -Dresume=false build-helper:parse-version release:prepare release:perform -DdevelopmentVersion=1.2.0-SNAPSHOT
+$ git push --all && git push --tags
 ```
-
 ## License
 
 This project is licensed under the [Apache 2 license](http://www.apache.org/licenses/LICENSE-2.0), which allows you to include modified versions of the code in your distributed software, without having to release your source code.
