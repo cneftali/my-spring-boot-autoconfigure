@@ -13,7 +13,7 @@
 ## Building from Source
 
 ```bash
-$ git clone git@github.com:cneftali/spring-boot-autoconfigure.git
+$ git clone git@github.com:cneftali/my-spring-boot-autoconfigure.git
 $ cd spring-boot-autoconfigure
 $ mvn clean package
 ```
