@@ -2,6 +2,7 @@
 
 [![Build Status](https://api.travis-ci.org/cneftali/spring-boot-autoconfigure.svg?branch=master)](https://github.com/cneftali/spring-boot-autoconfigure)
 [![Coverage Status](https://coveralls.io/repos/github/cneftali/spring-boot-autoconfigure/badge.svg?branch=master)](https://coveralls.io/github/cneftali/spring-boot-autoconfigure?branch=master)
+[![License](http://img.shields.io/:license-mit-blue.svg?style=flat)](http://doge.mit-license.org)
 
 ## Requirements
 
